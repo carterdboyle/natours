@@ -1,11 +1,16 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
+
+// 1) MIDDLEWARE
+
+app.use(morgan('dev'));
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log('Hello from the middleware 🙋‍♀️');
+  console.log('Hello from the middleware 👋');
   next();
 });
 
@@ -17,6 +22,8 @@ app.use((req, res, next) => {
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
+
+// 2) ROUTE HANDLERS
 
 const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
@@ -95,13 +102,56 @@ const updateTour = (req, res) => {
   });
 };
 
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet implemented',
+  });
+};
 
-app
-  .route('/api/v1/tours/:id')
-  .delete(deleteTour)
-  .get(getTour)
-  .patch(updateTour);
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet implemented',
+  });
+};
+
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet implemented',
+  });
+};
+
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet implemented',
+  });
+};
+
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet implemented',
+  });
+};
+
+// 3) ROUTES
+// tours
+const tourRouter = express.Router();
+const userRouter = express.Router();
+
+tourRouter.route('/').get(getAllTours).post(createTour);
+tourRouter.route('/:id').delete(deleteTour).get(getTour).patch(updateTour);
+
+userRouter.route('/').get(getAllUsers).post(createUser);
+userRouter.route('/:id').get(getUser).post(deleteUser).patch(updateUser);
+
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
+
+// 4) START THE SERVER
 
 const port = 3000;
 app.listen(port, () => {
