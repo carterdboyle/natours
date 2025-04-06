@@ -1,3 +1,4 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const morgan = require('morgan');
 
@@ -6,6 +7,7 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
+dotenv.config({ path: './config.env' });
 console.log(process.env.NODE_ENV);
 
 // 1) MIDDLEWARE
