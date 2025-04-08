@@ -1,4 +1,5 @@
 const Tour = require('../models/tourModel');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -9,54 +10,13 @@ exports.aliasTopTours = (req, res, next) => {
 
 exports.getAllTours = async (req, res) => {
   try {
-    console.log(req.query);
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
 
-    // Build Query
-    // 1A) Filtering
-    const queryObj = { ...req.query };
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach((el) => delete queryObj[el]);
-
-    // 1B) Advanded filtering
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    // { difficulty: 'easy', duration: { $gte: 5 } }
-    // //the filter string - include duration[<op>] in the request query
-    console.log(JSON.parse(queryStr));
-
-    let query = Tour.find(JSON.parse(queryStr)); //one way to build the query
-
-    // 2) Sorting
-    if (req.query.sort) {
-      const sortBy = req.query.sort.replace(/,/g, ' ');
-      query = query.sort(sortBy);
-      // sort('price ratingAverage')
-    } else {
-      query = query.sort('-createdAt');
-    }
-
-    // 3) Field limiting
-    if (req.query.fields) {
-      const fields = req.query.fields.replace(/,/g, ' ');
-      query = query.select(fields);
-    } else {
-      query = query.select('-__v');
-    }
-
-    // 4) Pagination
-    const limit = +req.query.limit || 100;
-    const page = +req.query.page || 1;
-    const skip = (page - 1) * limit;
-
-    query = query.skip(skip).limit(limit);
-
-    if (req.query.page) {
-      const numberTours = await Tour.countDocuments();
-      if (skip >= numberTours) throw new Error('This page does not exist');
-    }
-
-    const tours = await query;
+    const tours = await features.query;
 
     // const tours = await Tour.find()
     //   .where('duration')
