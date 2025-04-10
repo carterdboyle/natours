@@ -15,6 +15,7 @@ exports.signup = catchAsync(async (req, res) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
+    passwordChangedAt: req.body.passwordChangedAt,
   });
 
   //store secret in config file
@@ -74,11 +75,23 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 2) Verification
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  console.log(decoded);
-
   // 3) Check if user still exists
+  const freshUser = await User.findById(decoded.id);
+  if (!freshUser) {
+    throw new AppError(
+      'The user belonging to this token no longer exists.',
+      401,
+    );
+  }
 
   // 4) Check if user changed password after the token was issued
+  if (freshUser.changedPasswordAfter(decoded.iat))
+    throw new AppError(
+      'Password has changed recently! Please log in again!',
+      401,
+    );
 
+  // Grant access to the protected route
+  req.user = freshUser;
   next();
 });
