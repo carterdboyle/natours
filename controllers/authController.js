@@ -95,3 +95,18 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = freshUser;
   next();
 });
+
+exports.restrictTo =
+  (...roles) =>
+  (req, res, next) => {
+    // roles is an array ['admin', 'lead-guide']
+    // if role is in array user gets access
+
+    if (!roles.includes(req.user.role))
+      throw new AppError(
+        'You do not have permission to perform this action',
+        403,
+      ); //403 - forbidden
+
+    next();
+  };
