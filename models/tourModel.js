@@ -123,6 +123,12 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
+});
+
 // Document Middleware
 // Runs before the .save() and .create() command. .insertMany() does not trigger
 tourSchema.pre('save', function (next) {
