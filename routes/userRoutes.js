@@ -26,7 +26,7 @@ router
 router
   .route('/:id')
   .get(userController.getUser)
-  .post(userController.deleteUser)
+  .delete(userController.deleteUser)
   .patch(userController.updateUser);
 
 module.exports = router;
