@@ -26,12 +26,19 @@ router
     tourController.getMonthlyPlan,
   );
 
-router.get('/', tourController.getAllTours);
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(tourController.getToursWithin);
+// one way => /tours-distance?distance=233&center=-40,45&unit=mi
+// /tours-distance/233/center/-40,45/unit/mi
 
-router.use(authController.protect);
+router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances);
+
+router.get('/', tourController.getAllTours);
 router
   .route('/')
   .post(
+    authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
     tourController.createTour,
   );
@@ -40,10 +47,12 @@ router
   .route('/:id')
   .get(tourController.getTour)
   .patch(
+    authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
     tourController.updateTour,
   )
   .delete(
+    authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
     tourController.deleteTour,
   );
