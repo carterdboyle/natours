@@ -26,7 +26,28 @@ console.log(process.env.NODE_ENV);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP Headers
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      'script-src': ["'self'", 'https://api.mapbox.com'],
+      'style-src': [
+        "'self'",
+        "'unsafe-inline'",
+        'https://api.mapbox.com',
+        'https://fonts.googleapis.com',
+      ],
+      'font-src': ["'self'", 'https://fonts.gstatic.com'],
+      'worker-src': ["'self'", 'blob:'],
+      'img-src': ["'self'", 'data:', 'https://api.mapbox.com'],
+      'connect-src': [
+        "'self'",
+        'https://api.mapbox.com',
+        'https://events.mapbox.com',
+      ],
+    },
+  }),
+);
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
