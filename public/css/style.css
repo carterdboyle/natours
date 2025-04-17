@@ -605,6 +605,7 @@ body {
   grid-column-gap: 6rem;
   grid-auto-flow: column;
   overflow-x: scroll;
+  scrollbar-width: none;
   -ms-scroll-snap-type: x mandatory;
   scroll-snap-type: x mandatory;
 }
