@@ -2946,25 +2946,35 @@ const $1eb2f20fd1741841$export$596d806903d1f59e = async (email, password)=>{
         (0, $8041b789449142c7$export$de026b00723010c1)('error', err.response.data.message);
     }
 };
+const $1eb2f20fd1741841$export$a0973bcfe11b05c9 = async ()=>{
+    try {
+        const res = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)({
+            method: 'GET',
+            url: 'http://127.0.0.1:3000/api/v1/users/logout'
+        });
+        if (res.data.status === 'success') location.reload(true);
+    } catch (err) {
+        (0, $8041b789449142c7$export$de026b00723010c1)('error', 'Error logging out! Try again!');
+    }
+};
 
 
 // DOM ELEMENTS
 const $cd847052aee7f446$var$mapBox = document.getElementById('map');
 const $cd847052aee7f446$var$loginForm = document.querySelector('.form');
+const $cd847052aee7f446$var$logoutBtn = document.querySelector('.nav__el--logout');
 //DELEGATION
 if ($cd847052aee7f446$var$mapBox) {
     const locations = JSON.parse(document.getElementById('map').dataset.locations);
     (0, $6b28cffc2b36340e$export$4c5dd147b21b9176)(locations);
 }
-if ($cd847052aee7f446$var$loginForm) {
-    console.log('attaching listener...');
-    document.querySelector('.form').addEventListener('submit', (e)=>{
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        (0, $1eb2f20fd1741841$export$596d806903d1f59e)(email, password);
-    });
-}
+if ($cd847052aee7f446$var$loginForm) document.querySelector('.form').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    (0, $1eb2f20fd1741841$export$596d806903d1f59e)(email, password);
+});
+if ($cd847052aee7f446$var$logoutBtn) $cd847052aee7f446$var$logoutBtn.addEventListener('click', (0, $1eb2f20fd1741841$export$a0973bcfe11b05c9));
 
 
 //# sourceMappingURL=bundle.js.map
