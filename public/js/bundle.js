@@ -2965,17 +2965,15 @@ const $1eb2f20fd1741841$export$a0973bcfe11b05c9 = async ()=>{
 //updateData
 
 
-const $eb7f13463bc34e60$export$3bf0495508a61ee = async (name, email)=>{
+const $eb7f13463bc34e60$export$3bf0495508a61ee = async (data, type)=>{
     try {
+        const url = type === 'password' ? 'http://127.0.0.1:3000/api/v1/users/updateMyPassword' : 'http://127.0.0.1:3000/api/v1/users/updateMe';
         const res = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)({
             method: 'PATCH',
-            url: 'http://127.0.0.1:3000/api/v1/users/updateMe',
-            data: {
-                name: name,
-                email: email
-            }
+            url: url,
+            data: data
         });
-        if (res.data.status === 'success') (0, $8041b789449142c7$export$de026b00723010c1)('success', 'User data successfully updated!');
+        if (res.data.status === 'success') (0, $8041b789449142c7$export$de026b00723010c1)('success', `${type.charAt(0).toUpperCase() + type.slice(1)} successfully updated!`);
     } catch (err) {
         (0, $8041b789449142c7$export$de026b00723010c1)('error', err.response.data.message);
     }
@@ -2987,6 +2985,7 @@ const $cd847052aee7f446$var$mapBox = document.getElementById('map');
 const $cd847052aee7f446$var$loginForm = document.querySelector('.form--login');
 const $cd847052aee7f446$var$logoutBtn = document.querySelector('.nav__el--logout');
 const $cd847052aee7f446$var$userDataForm = document.querySelector('.form-user-data');
+const $cd847052aee7f446$var$userPasswordForm = document.querySelector('.form-user-password');
 //DELEGATION
 if ($cd847052aee7f446$var$mapBox) {
     const locations = JSON.parse(document.getElementById('map').dataset.locations);
@@ -3002,7 +3001,26 @@ if ($cd847052aee7f446$var$userDataForm) $cd847052aee7f446$var$userDataForm.addEv
     e.preventDefault();
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    (0, $eb7f13463bc34e60$export$3bf0495508a61ee)(name, email);
+    (0, $eb7f13463bc34e60$export$3bf0495508a61ee)({
+        name: name,
+        email: email
+    }, 'user data');
+});
+if ($cd847052aee7f446$var$userPasswordForm) $cd847052aee7f446$var$userPasswordForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    document.querySelector('.btn--save-password').textContent = 'Updating...';
+    const passwordCurrent = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    await (0, $eb7f13463bc34e60$export$3bf0495508a61ee)({
+        passwordConfirm: passwordConfirm,
+        password: password,
+        passwordCurrent: passwordCurrent
+    }, 'password');
+    document.querySelector('.btn--save-password').textContent = 'Save password';
+    document.getElementById('password').value = '';
+    document.getElementById('password-current').value = '';
+    document.getElementById('password-confirm').value = '';
 });
 if ($cd847052aee7f446$var$logoutBtn) $cd847052aee7f446$var$logoutBtn.addEventListener('click', (0, $1eb2f20fd1741841$export$a0973bcfe11b05c9));
 
