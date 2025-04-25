@@ -2961,7 +2961,7 @@ const $1eb2f20fd1741841$export$a0973bcfe11b05c9 = async ()=>{
 
 // DOM ELEMENTS
 const $cd847052aee7f446$var$mapBox = document.getElementById('map');
-const $cd847052aee7f446$var$loginForm = document.querySelector('.form');
+const $cd847052aee7f446$var$loginForm = document.querySelector('.form--login');
 const $cd847052aee7f446$var$logoutBtn = document.querySelector('.nav__el--logout');
 //DELEGATION
 if ($cd847052aee7f446$var$mapBox) {
