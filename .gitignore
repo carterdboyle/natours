@@ -4,3 +4,4 @@ dev-data/data/
 *.cache
 *.parcel-cache
 dist
+public/js/bundle.js*

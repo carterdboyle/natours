@@ -2914,6 +2914,18 @@ $0ca3db0dd477a5f6$export$2e2bcd8739ae039 = $0ca3db0dd477a5f6$var$axios;
 const { Axios: $5b1e7ddf532f6b9c$export$1c00760e9e5a4e95, AxiosError: $5b1e7ddf532f6b9c$export$c1fbed17c2f6a328, CanceledError: $5b1e7ddf532f6b9c$export$1ab0c6b20d94fa14, isCancel: $5b1e7ddf532f6b9c$export$3b22524397b493c6, CancelToken: $5b1e7ddf532f6b9c$export$fd08e3cb425f0d61, VERSION: $5b1e7ddf532f6b9c$export$a4ad2735b021c132, all: $5b1e7ddf532f6b9c$export$84bf76cd7afc7469, Cancel: $5b1e7ddf532f6b9c$export$848c9b7ead0df967, isAxiosError: $5b1e7ddf532f6b9c$export$fbafdbe06a5b5a9a, spread: $5b1e7ddf532f6b9c$export$3ae0fd4797ed47c8, toFormData: $5b1e7ddf532f6b9c$export$10ae0d317ea97f8b, AxiosHeaders: $5b1e7ddf532f6b9c$export$4e7d6ff0f3e6520, HttpStatusCode: $5b1e7ddf532f6b9c$export$a972f69c851492b3, formToJSON: $5b1e7ddf532f6b9c$export$86d7c59254d6a2c9, getAdapter: $5b1e7ddf532f6b9c$export$17ddc20a97d669e2, mergeConfig: $5b1e7ddf532f6b9c$export$7ec1ebcfa9d8bd6a } = (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039);
 
 
+/* eslint-disable */ const $8041b789449142c7$export$516836c6a9dfc573 = ()=>{
+    const el = document.querySelector('.alert');
+    if (el) el.parentElement.removeChild(el);
+};
+const $8041b789449142c7$export$de026b00723010c1 = (type, msg)=>{
+    $8041b789449142c7$export$516836c6a9dfc573();
+    const markup = `<div class="alert alert--${type}">${msg}</div>`;
+    document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
+    window.setTimeout($8041b789449142c7$export$516836c6a9dfc573, 5000);
+};
+
+
 const $1eb2f20fd1741841$export$596d806903d1f59e = async (email, password)=>{
     try {
         const res = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)({
@@ -2925,13 +2937,13 @@ const $1eb2f20fd1741841$export$596d806903d1f59e = async (email, password)=>{
             }
         });
         if (res.data.status === 'success') {
-            alert('Logged in succesfully!');
+            (0, $8041b789449142c7$export$de026b00723010c1)('success', 'Logged in successfully!');
             window.setTimeout(()=>{
                 location.assign('/');
             }, 1500);
         }
     } catch (err) {
-        alert(err.response.data.message);
+        (0, $8041b789449142c7$export$de026b00723010c1)('error', err.response.data.message);
     }
 };
 
