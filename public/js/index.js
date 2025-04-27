@@ -2,7 +2,7 @@
 // import '@babel/polyfill';
 import { displayMap } from './mapbox.js';
 import { login, logout } from './login.js';
-import { updateData } from './updateSettings.js';
+import { updateSettings } from './updateSettings.js';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
@@ -30,9 +30,13 @@ if (loginForm)
 if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    updateData({ name, email }, 'user data');
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
+    console.log(form);
+
+    updateSettings(form, 'user data');
   });
 
 if (userPasswordForm)

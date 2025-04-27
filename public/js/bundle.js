@@ -2965,7 +2965,7 @@ const $1eb2f20fd1741841$export$a0973bcfe11b05c9 = async ()=>{
 //updateData
 
 
-const $eb7f13463bc34e60$export$3bf0495508a61ee = async (data, type)=>{
+const $eb7f13463bc34e60$export$f558026a994b6051 = async (data, type)=>{
     try {
         const url = type === 'password' ? 'http://127.0.0.1:3000/api/v1/users/updateMyPassword' : 'http://127.0.0.1:3000/api/v1/users/updateMe';
         const res = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)({
@@ -2999,12 +2999,12 @@ if ($cd847052aee7f446$var$loginForm) $cd847052aee7f446$var$loginForm.addEventLis
 });
 if ($cd847052aee7f446$var$userDataForm) $cd847052aee7f446$var$userDataForm.addEventListener('submit', (e)=>{
     e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    (0, $eb7f13463bc34e60$export$3bf0495508a61ee)({
-        name: name,
-        email: email
-    }, 'user data');
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
+    console.log(form);
+    (0, $eb7f13463bc34e60$export$f558026a994b6051)(form, 'user data');
 });
 if ($cd847052aee7f446$var$userPasswordForm) $cd847052aee7f446$var$userPasswordForm.addEventListener('submit', async (e)=>{
     e.preventDefault();
@@ -3012,7 +3012,7 @@ if ($cd847052aee7f446$var$userPasswordForm) $cd847052aee7f446$var$userPasswordFo
     const passwordCurrent = document.getElementById('password-current').value;
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('password-confirm').value;
-    await (0, $eb7f13463bc34e60$export$3bf0495508a61ee)({
+    await updateData({
         passwordConfirm: passwordConfirm,
         password: password,
         passwordCurrent: passwordCurrent
