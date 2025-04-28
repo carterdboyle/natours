@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -27,6 +28,11 @@ app.set('views', path.join(__dirname, 'views'));
 console.log(process.env.NODE_ENV);
 
 // 1) MIDDLEWARE
+// Implement CORS
+app.use(cors());
+
+app.options('*', cors());
+
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
