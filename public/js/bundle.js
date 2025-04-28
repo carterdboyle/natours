@@ -2980,12 +2980,32 @@ const $eb7f13463bc34e60$export$f558026a994b6051 = async (data, type)=>{
 };
 
 
+/* eslint-disable */ 
+
+const $220dcfecfe41367b$var$stripe = Stripe('pk_test_51RIdctQW54DN1XYH7ynKqp1l3SLv6aBmjoZemeFlBwmf9g69Ge6XHXwfh6rLavZs00N4Zeti6masfTq9xKUBoBLl00rFq2MZ13');
+const $220dcfecfe41367b$export$8d5bdbf26681c0c2 = async (tourId)=>{
+    try {
+        // 1) Get checkout session from API
+        const session = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)(`http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`);
+        console.log(session);
+        // 2) Create checkout from + charge credit card
+        await $220dcfecfe41367b$var$stripe.redirectToCheckout({
+            sessionId: session.data.session.id
+        });
+    } catch (err) {
+        console.log(err);
+        (0, $8041b789449142c7$export$de026b00723010c1)('error', err);
+    }
+};
+
+
 // DOM ELEMENTS
 const $cd847052aee7f446$var$mapBox = document.getElementById('map');
 const $cd847052aee7f446$var$loginForm = document.querySelector('.form--login');
 const $cd847052aee7f446$var$logoutBtn = document.querySelector('.nav__el--logout');
 const $cd847052aee7f446$var$userDataForm = document.querySelector('.form-user-data');
 const $cd847052aee7f446$var$userPasswordForm = document.querySelector('.form-user-password');
+const $cd847052aee7f446$var$bookBtn = document.getElementById('book-tour');
 //DELEGATION
 if ($cd847052aee7f446$var$mapBox) {
     const locations = JSON.parse(document.getElementById('map').dataset.locations);
@@ -3021,6 +3041,11 @@ if ($cd847052aee7f446$var$userPasswordForm) $cd847052aee7f446$var$userPasswordFo
     document.getElementById('password').value = '';
     document.getElementById('password-current').value = '';
     document.getElementById('password-confirm').value = '';
+});
+if ($cd847052aee7f446$var$bookBtn) $cd847052aee7f446$var$bookBtn.addEventListener('click', (e)=>{
+    e.target.textContent = 'Processing...';
+    const { tourId: tourId } = e.target.dataset;
+    (0, $220dcfecfe41367b$export$8d5bdbf26681c0c2)(tourId);
 });
 if ($cd847052aee7f446$var$logoutBtn) $cd847052aee7f446$var$logoutBtn.addEventListener('click', (0, $1eb2f20fd1741841$export$a0973bcfe11b05c9));
 

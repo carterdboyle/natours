@@ -13,6 +13,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
@@ -31,13 +32,19 @@ app.use(
   helmet.contentSecurityPolicy({
     useDefaults: true,
     directives: {
-      'script-src': ["'self'", 'https://api.mapbox.com', 'https://unpkg.com'],
+      'script-src': [
+        "'self'",
+        'https://api.mapbox.com',
+        'https://unpkg.com',
+        'https://js.stripe.com',
+      ],
       'style-src': [
         "'self'",
         "'unsafe-inline'",
         'https://api.mapbox.com',
         'https://fonts.googleapis.com',
       ],
+      'frame-src': ['https://js.stripe.com'],
       'font-src': ["'self'", 'https://fonts.gstatic.com'],
       'worker-src': ["'self'", 'blob:'],
       'img-src': ["'self'", 'data:', 'https://api.mapbox.com'],
@@ -103,6 +110,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`));
