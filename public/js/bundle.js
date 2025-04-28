@@ -2957,6 +2957,7 @@ const $1eb2f20fd1741841$export$a0973bcfe11b05c9 = async ()=>{
             location.reload(true);
         }
     } catch (err) {
+        console.log(err.response);
         (0, $8041b789449142c7$export$de026b00723010c1)('error', 'Error logging out! Try again!');
     }
 };
@@ -2987,7 +2988,6 @@ const $220dcfecfe41367b$export$8d5bdbf26681c0c2 = async (tourId)=>{
     try {
         // 1) Get checkout session from API
         const session = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)(`http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`);
-        console.log(session);
         // 2) Create checkout from + charge credit card
         await $220dcfecfe41367b$var$stripe.redirectToCheckout({
             sessionId: session.data.session.id
@@ -3023,7 +3023,6 @@ if ($cd847052aee7f446$var$userDataForm) $cd847052aee7f446$var$userDataForm.addEv
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]);
-    console.log(form);
     (0, $eb7f13463bc34e60$export$f558026a994b6051)(form, 'user data');
 });
 if ($cd847052aee7f446$var$userPasswordForm) $cd847052aee7f446$var$userPasswordForm.addEventListener('submit', async (e)=>{
