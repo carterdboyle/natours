@@ -2918,11 +2918,11 @@ const { Axios: $5b1e7ddf532f6b9c$export$1c00760e9e5a4e95, AxiosError: $5b1e7ddf5
     const el = document.querySelector('.alert');
     if (el) el.parentElement.removeChild(el);
 };
-const $8041b789449142c7$export$de026b00723010c1 = (type, msg)=>{
+const $8041b789449142c7$export$de026b00723010c1 = (type, msg, time = 7)=>{
     $8041b789449142c7$export$516836c6a9dfc573();
     const markup = `<div class="alert alert--${type}">${msg}</div>`;
     document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
-    window.setTimeout($8041b789449142c7$export$516836c6a9dfc573, 5000);
+    window.setTimeout($8041b789449142c7$export$516836c6a9dfc573, time * 1000);
 };
 
 
@@ -2999,6 +2999,7 @@ const $220dcfecfe41367b$export$8d5bdbf26681c0c2 = async (tourId)=>{
 };
 
 
+
 // DOM ELEMENTS
 const $cd847052aee7f446$var$mapBox = document.getElementById('map');
 const $cd847052aee7f446$var$loginForm = document.querySelector('.form--login');
@@ -3047,6 +3048,8 @@ if ($cd847052aee7f446$var$bookBtn) $cd847052aee7f446$var$bookBtn.addEventListene
     (0, $220dcfecfe41367b$export$8d5bdbf26681c0c2)(tourId);
 });
 if ($cd847052aee7f446$var$logoutBtn) $cd847052aee7f446$var$logoutBtn.addEventListener('click', (0, $1eb2f20fd1741841$export$a0973bcfe11b05c9));
+const $cd847052aee7f446$var$alert = document.querySelector('body').dataset.alert;
+if ($cd847052aee7f446$var$alert) (0, $8041b789449142c7$export$de026b00723010c1)('success', $cd847052aee7f446$var$alert, 20);
 
 
 //# sourceMappingURL=bundle.js.map
