@@ -2930,7 +2930,7 @@ const $1eb2f20fd1741841$export$596d806903d1f59e = async (email, password)=>{
     try {
         const res = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)({
             method: 'POST',
-            url: 'http://127.0.0.1:3000/api/v1/users/login',
+            url: '/api/v1/users/login',
             data: {
                 email: email,
                 password: password
@@ -2950,7 +2950,7 @@ const $1eb2f20fd1741841$export$a0973bcfe11b05c9 = async ()=>{
     try {
         const res = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)({
             method: 'GET',
-            url: 'http://127.0.0.1:3000/api/v1/users/logout'
+            url: '/api/v1/users/logout'
         });
         if (res.data.status === 'success') {
             if (location.pathname === '/me') return location.assign('/');
@@ -2968,7 +2968,7 @@ const $1eb2f20fd1741841$export$a0973bcfe11b05c9 = async ()=>{
 
 const $eb7f13463bc34e60$export$f558026a994b6051 = async (data, type)=>{
     try {
-        const url = type === 'password' ? 'http://127.0.0.1:3000/api/v1/users/updateMyPassword' : 'http://127.0.0.1:3000/api/v1/users/updateMe';
+        const url = type === 'password' ? '/api/v1/users/updateMyPassword' : '/api/v1/users/updateMe';
         const res = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)({
             method: 'PATCH',
             url: url,
@@ -2987,7 +2987,7 @@ const $220dcfecfe41367b$var$stripe = Stripe('pk_test_51RIdctQW54DN1XYH7ynKqp1l3S
 const $220dcfecfe41367b$export$8d5bdbf26681c0c2 = async (tourId)=>{
     try {
         // 1) Get checkout session from API
-        const session = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)(`http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`);
+        const session = await (0, $0ca3db0dd477a5f6$export$2e2bcd8739ae039)(`/api/v1/bookings/checkout-session/${tourId}`);
         // 2) Create checkout from + charge credit card
         await $220dcfecfe41367b$var$stripe.redirectToCheckout({
             sessionId: session.data.session.id

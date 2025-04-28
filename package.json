@@ -6,7 +6,8 @@
     "start": "nodemon server.js",
     "start:prod": "set NODE_ENV=production&&nodemon server.js",
     "debug": "ndb server.js",
-    "watch:js": "parcel watch"
+    "watch:js": "parcel watch",
+    "build:js": "parcel build"
   },
   "author": "Carter Boyle",
   "license": "ISC",
