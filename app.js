@@ -21,8 +21,7 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
-// bug fix - trust proxy error on render.com
-// app.enable('trust proxy');
+app.enable('trust proxy');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
