@@ -17,12 +17,15 @@ const createSendToken = (user, statusCode, req, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
+    domain: 'http://localhost/',
     httpOnly: true,
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
 
   // Remove password from output
   user.password = undefined;
+
+  console.log(res.headers);
 
   res.status(statusCode).json({
     status: 'success',
@@ -140,12 +143,19 @@ exports.isLoggedIn = async (req, res, next) => {
       if (currentUser.changedPasswordAfter(decoded.iat)) return next();
 
       // THERE IS A LOGGED IN USER
-      res.locals.user = currentUser;
+      req.user = currentUser;
+      return next();
     } catch (err) {
       return next();
     }
   }
-  next();
+  // not logged in but no error
+  res.status(200).json({
+    message: 'success',
+    data: {
+      data: null,
+    },
+  });
 };
 
 exports.restrictTo =

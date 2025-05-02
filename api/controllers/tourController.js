@@ -77,6 +77,22 @@ exports.aliasTopTours = (req, res, next) => {
 
 exports.getAllTours = factory.getAll(Tour);
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+exports.getTourBySlug = catchAsync(async (req, res, next) => {
+  const doc = await Tour.findOne({ slug: req.params.slug }).populate({
+    path: 'reviews',
+  });
+
+  if (!doc) {
+    return next(); // search by id handle error in id middleware
+  }
+
+  res.status(200).json({
+    message: 'success',
+    data: {
+      data: doc,
+    },
+  });
+});
 exports.updateTour = factory.updateOne(Tour);
 exports.createTour = factory.createOne(Tour);
 exports.deleteTour = factory.deleteOne(Tour);

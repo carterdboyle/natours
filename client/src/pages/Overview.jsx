@@ -1,21 +1,23 @@
-import { useQuery } from '@tanstack/react-query';
-
-import { API_URL } from '../config';
+import TourCard from '../components/TourCard';
 import Spinner from '../components/Spinner';
+import { useTours } from '../hooks/useTours';
 
 export default function Overview() {
-  const {
-    isLoading,
-    data: tours,
-    error,
-  } = useQuery({
-    queryKey: ['tours'],
-    queryFn: async () => {
-      const res = await fetch(`${API_URL}tours`);
-      const { data } = await res.json();
-      return data.data;
-    },
-  });
+  const { isLoading, tours, error } = useTours();
 
   if (isLoading) return <Spinner />;
+
+  if (!tours?.length) return <div>No tours found!</div>;
+
+  if (error) return <Error msg={error.message} />;
+
+  return (
+    <main className="main">
+      <div className="card-container">
+        {tours.map((tour) => (
+          <TourCard tour={tour} key={tour.id} />
+        ))}
+      </div>
+    </main>
+  );
 }
