@@ -1,9 +1,9 @@
-import TourCard from '../components/TourCard';
 import Spinner from '../components/Spinner';
-import { useTours } from '../hooks/useTours';
+import TourCard from '../components/TourCard';
+import { useBookings } from '../hooks/useBookings';
 
-export default function Overview() {
-  const { isLoading, tours } = useTours();
+export default function BookingsOverview() {
+  const { isLoading, tours } = useBookings();
 
   if (isLoading) return <Spinner />;
 

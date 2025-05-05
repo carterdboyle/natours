@@ -26,7 +26,12 @@ console.log(process.env.NODE_ENV);
 
 // 1) MIDDLEWARE
 // Implement CORS
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }),
+);
 
 app.options('*', cors());
 

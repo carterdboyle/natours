@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import Spinner from '../components/Spinner';
 import TourMap from '../components/TourMap';
 import { useTour } from '../hooks/useTour';
+import { bookTour } from '../hooks/useStripe';
 
 function OverviewBox({ label, text, icon }) {
   return (
@@ -194,7 +195,7 @@ export default function Tour() {
               <button
                 className="btn btn--green span-all-rows"
                 id="book-tour"
-                data-tour-id={tour.id}
+                onClick={() => bookTour(tour.id)}
               >
                 Book tour now!
               </button>

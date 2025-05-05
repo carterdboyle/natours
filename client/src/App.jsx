@@ -12,6 +12,7 @@ import Account from './pages/Account';
 import { AuthProvider } from '../context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import PageNotFound from './pages/PageNotFound';
+import BookingsOverview from './pages/BookingsOverview';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,14 +32,22 @@ function App() {
           <Routes>
             <Route element={<AppLayout />}>
               <Route index element={<Navigate replace to="overview" />} />
-              <Route path="overview" element={<Overview />} />
-              <Route path="tours/:slug" element={<Tour />} />
-              <Route path="login" element={<Login />} />
+              <Route path="/overview" element={<Overview />} />
+              <Route path="/tours/:slug" element={<Tour />} />
+              <Route path="/login" element={<Login />} />
               <Route
                 path="/me"
                 element={
                   <ProtectedRoute>
                     <Account />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-tours"
+                element={
+                  <ProtectedRoute>
+                    <BookingsOverview />
                   </ProtectedRoute>
                 }
               />

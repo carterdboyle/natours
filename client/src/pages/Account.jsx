@@ -34,10 +34,17 @@ export default function Account() {
   function handleUserUpdate(e, type) {
     e.preventDefault();
 
-    const formData = new FormData(e.target);
+    const data =
+      type === 'password'
+        ? JSON.stringify({
+            password,
+            passwordCurrent,
+            passwordConfirm,
+          })
+        : new FormData(e.target);
 
     updateUser(
-      { formData, type },
+      { data, type },
       {
         onSettled: () => {
           setPassword('');
@@ -146,7 +153,7 @@ export default function Account() {
                   type="password"
                   placeholder="••••••••"
                   value={passwordCurrent}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setPasswordCurrent(e.target.value)}
                   required
                   minLength={8}
                 />
@@ -161,7 +168,7 @@ export default function Account() {
                   type="password"
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e) => e.target.value}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={8}
                 />
@@ -176,7 +183,7 @@ export default function Account() {
                   type="password"
                   placeholder="••••••••"
                   value={passwordConfirm}
-                  onChange={(e) => e.target.value}
+                  onChange={(e) => setPasswordConfirm(e.target.value)}
                   required
                   minLength={8}
                 />

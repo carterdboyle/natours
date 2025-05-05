@@ -6,23 +6,25 @@ export function useUpdateUser() {
   const queryClient = useQueryClient();
 
   const { mutate: updateUser, isLoading } = useMutation({
-    mutationFn: async ({ formData, type }) => {
-      console.log(formData);
+    mutationFn: async ({ data, type }) => {
       const url =
         type === 'password' ? 'users/updateMyPassword' : 'users/updateMe';
-      const res = await fetch(`${API_URL}${url}`, {
+
+      const req = new Request(`${API_URL}${url}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        formData,
+        credentials: 'include',
+        body: data,
       });
 
-      const data = await res.json();
+      if (type === 'password')
+        req.headers.set('content-type', 'application/json');
 
-      if (!res.ok) throw new Error(data.message || 'Request failed');
+      const res = await fetch(req);
+      const json = await res.json();
 
-      return data.data;
+      if (!res.ok) throw new Error(json.message || 'Request failed');
+
+      return json.data;
     },
     onSuccess: async (user) => {
       queryClient.setQueryData(['user'], user?.user);

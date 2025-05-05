@@ -4,7 +4,6 @@ const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
-const AppError = require('../utils/appError');
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get currently booked tour
@@ -13,8 +12,8 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 2) Create checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    success_url: `${req.protocol}://${req.get('host')}/my-tours?alert=booking`,
-    cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
+    success_url: `${req.headers.origin}/my-tours`,
+    cancel_url: `${req.headers.origin}/tours/${tour.slug}`,
     customer_email: req.user.email,
     client_reference_id: req.params.tourId,
     mode: 'payment',
@@ -25,9 +24,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
           product_data: {
             name: `${tour.name} Tour`,
             description: tour.summary,
-            images: [
-              `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
-            ],
+            images: [`${req.headers.origin}/img/tours/${tour.imageCover}`],
           },
           unit_amount: tour.price * 100,
         },
@@ -86,3 +83,17 @@ exports.getBooking = factory.getOne(Booking);
 exports.getAllBookings = factory.getAll(Booking);
 exports.updateBooking = factory.updateOne(Booking);
 exports.deleteBooking = factory.deleteOne(Booking);
+
+exports.getUserBookings = async (req, res) => {
+  // 1) Find all bookings
+  const bookings = await Booking.find({ user: req.user.id });
+
+  // 2) Find tours with the returned IDs
+  const tourIDs = bookings.map((el) => el.tour);
+  const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  res.status(200).json({
+    status: 'success',
+    data: tours,
+  });
+};
