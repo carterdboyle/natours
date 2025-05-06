@@ -26,12 +26,7 @@ console.log(process.env.NODE_ENV);
 
 // 1) MIDDLEWARE
 // Implement CORS
-app.use(
-  cors({
-    origin: 'http://localhost:5173',
-    credentials: true,
-  }),
-);
+app.use(cors());
 
 app.options('*', cors());
 
@@ -118,6 +113,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
 // 3) ROUTES
 // Web page routes
 // API Routes
@@ -126,10 +123,21 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
-app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server`));
-  //skips all other middleware -> error handling
+app.get('*', (req, res) => {
+  if (/(.ico|.png|.js|.css|.jpg|.jpeg|.map)$/i.test(req.path)) {
+    // Let static middleware handle it (this case shouldn't happen here, but just in case)
+    res.status(404).end();
+  } else {
+    res.setHeader('Expires', '-1');
+    res.setHeader('Pragma', 'no-cache');
+    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+  }
 });
+
+// app.all('*', (req, res, next) => {
+//   next(new AppError(`Can't find ${req.originalUrl} on this server`));
+//   //skips all other middleware -> error handling
+// });
 
 // Error handling middleware
 
