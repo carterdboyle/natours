@@ -20,7 +20,7 @@ const bookingController = require('./controllers/bookingController');
 
 const app = express();
 
-// app.enable('trust proxy', 1);
+app.enable('trust proxy', 1);
 
 console.log(process.env.NODE_ENV);
 

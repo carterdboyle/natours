@@ -5,3 +5,4 @@ dev-data/data/
 *.parcel-cache
 dist
 public/js/bundle.js*
+api/api.zip
