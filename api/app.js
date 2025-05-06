@@ -113,7 +113,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // 3) ROUTES
 // Web page routes
@@ -130,7 +130,7 @@ app.get('*', (req, res) => {
   } else {
     res.setHeader('Expires', '-1');
     res.setHeader('Pragma', 'no-cache');
-    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
   }
 });
 
