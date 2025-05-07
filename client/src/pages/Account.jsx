@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useUpdateUser } from '../hooks/useUpdateUser';
 import { useAuth } from '../../context/AuthContext';
@@ -22,14 +22,19 @@ export default function Account() {
   const { isLoading: isLoadingUser, user } = useAuth();
   const { isLoading: isUpdatingUser, updateUser } = useUpdateUser();
 
-  const [userName, setUserName] = useState(user?.name);
-  const [email, setEmail] = useState(user?.email);
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
 
   const [password, setPassword] = useState('');
   const [passwordCurrent, setPasswordCurrent] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
-  if (isLoadingUser || isUpdatingUser) return <Spinner />;
+  console.log(isUpdatingUser);
+
+  useEffect(() => {
+    setUserName(user.name);
+    setEmail(user.email);
+  }, [user]);
 
   function handleUserUpdate(e, type) {
     e.preventDefault();
@@ -78,123 +83,133 @@ export default function Account() {
           )}
         </nav>
         <div className="user-view__content">
-          <div className="user-view__form-container">
-            <h2 className="heading-secondary ma-bt-md">
-              Your account settings
-            </h2>
-            <form
-              onSubmit={(e) => handleUserUpdate(e, 'user data')}
-              className="form form-user-data"
-            >
-              <div className="form__group">
-                <label className="form__label" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  id="name"
-                  className="form__input"
-                  type="text"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                  required
-                  name="name"
-                />
-                <div className="form__group ma-bt-md">
-                  <label className="form__label" htmlFor="email">
-                    Email address
-                  </label>
-                  <input
-                    className="email form__input"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    name="email"
-                  />
-                </div>
-                <div className="form__group form__photo-upload">
-                  <img
-                    className="form__user-photo"
-                    src={`/img/users/${user.photo}`}
-                    alt="User photo"
-                  />
-                  <input
-                    className="form__upload"
-                    type="file"
-                    accept="image/*"
-                    id="photo"
-                    name="photo"
-                  />
-                  <label htmlFor="photo">Choose new photo</label>
-                </div>
-                <div className="form__group right">
-                  <button className="btn btn--small btn--green">
-                    Save settings
-                  </button>
-                </div>
+          {isUpdatingUser || isLoadingUser ? (
+            <Spinner />
+          ) : (
+            <>
+              <div className="user-view__form-container">
+                <h2 className="heading-secondary ma-bt-md">
+                  Your account settings
+                </h2>
+                <form
+                  onSubmit={(e) => handleUserUpdate(e, 'user')}
+                  className="form form-user-data"
+                >
+                  <div className="form__group">
+                    <label className="form__label" htmlFor="name">
+                      Name
+                    </label>
+                    <input
+                      id="name"
+                      className="form__input"
+                      type="text"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                      required
+                      name="name"
+                    />
+                  </div>
+                  <div className="form__group ma-bt-md">
+                    <label className="form__label" htmlFor="email">
+                      Email address
+                    </label>
+                    <input
+                      className="email form__input"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      name="email"
+                    />
+                  </div>
+                  <div className="form__group form__photo-upload">
+                    <img
+                      className="form__user-photo"
+                      src={
+                        user.photo.startsWith('http')
+                          ? `${user.photo}`
+                          : `/img/users/${user.photo}`
+                      }
+                      alt="User photo"
+                    />
+                    <input
+                      className="form__upload"
+                      type="file"
+                      accept="image/*"
+                      id="photo"
+                      name="photo"
+                    />
+                    <label htmlFor="photo">Choose new photo</label>
+                  </div>
+                  <div className="form__group right">
+                    <button className="btn btn--small btn--green">
+                      Save settings
+                    </button>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
 
-          <div className="line">&nbsp;</div>
-          <div className="user-view__form-container">
-            <h2 className="heading-secondary ma-bt-md">Password change</h2>
-            <form
-              className="form form-user-password"
-              onSubmit={(e) => handleUserUpdate(e, 'password')}
-            >
-              <div className="form__group">
-                <label className="form__label" htmlFor="password-current">
-                  Current password
-                </label>
-                <input
-                  id="password-current"
-                  className="form__input"
-                  type="password"
-                  placeholder="••••••••"
-                  value={passwordCurrent}
-                  onChange={(e) => setPasswordCurrent(e.target.value)}
-                  required
-                  minLength={8}
-                />
+              <div className="line">&nbsp;</div>
+              <div className="user-view__form-container">
+                <h2 className="heading-secondary ma-bt-md">Password change</h2>
+                <form
+                  className="form form-user-password"
+                  onSubmit={(e) => handleUserUpdate(e, 'password')}
+                >
+                  <div className="form__group">
+                    <label className="form__label" htmlFor="password-current">
+                      Current password
+                    </label>
+                    <input
+                      id="password-current"
+                      className="form__input"
+                      type="password"
+                      placeholder="••••••••"
+                      value={passwordCurrent}
+                      onChange={(e) => setPasswordCurrent(e.target.value)}
+                      required
+                      minLength={8}
+                    />
+                  </div>
+                  <div className="form__group">
+                    <label className="form__label" htmlFor="password">
+                      New password
+                    </label>
+                    <input
+                      id="password"
+                      className="form__input"
+                      type="password"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      minLength={8}
+                    />
+                  </div>
+                  <div className="form__group ma-bt-lg">
+                    <label className="form__label" htmlFor="password-confirm">
+                      Confirm password
+                    </label>
+                    <input
+                      id="password-confirm"
+                      className="form__input"
+                      type="password"
+                      placeholder="••••••••"
+                      value={passwordConfirm}
+                      onChange={(e) => setPasswordConfirm(e.target.value)}
+                      required
+                      minLength={8}
+                    />
+                  </div>
+                  <div className="form__group right">
+                    <button className="btn btn--small btn--green btn--save-password">
+                      Save password
+                    </button>
+                  </div>
+                </form>
               </div>
-              <div className="form__group">
-                <label className="form__label" htmlFor="password">
-                  New password
-                </label>
-                <input
-                  id="password"
-                  className="form__input"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={8}
-                />
-              </div>
-              <div className="form__group ma-bt-lg">
-                <label className="form__label" htmlFor="password-confirm">
-                  Confirm password
-                </label>
-                <input
-                  id="password-confirm"
-                  className="form__input"
-                  type="password"
-                  placeholder="••••••••"
-                  value={passwordConfirm}
-                  onChange={(e) => setPasswordConfirm(e.target.value)}
-                  required
-                  minLength={8}
-                />
-              </div>
-              <div className="form__group right">
-                <button className="btn btn--small btn--green btn--save-password">
-                  Save password
-                </button>
-              </div>
-            </form>
-          </div>
+            </>
+          )}
         </div>
       </div>
     </main>

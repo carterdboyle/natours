@@ -1,5 +1,6 @@
 const multer = require('multer');
 const sharp = require('sharp');
+const AWS = require('aws-sdk');
 
 const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
@@ -16,6 +17,16 @@ const User = require('../models/userModel');
 //     cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
 //   },
 // });
+
+//Configure AWS
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
+
+const s3 = new AWS.S3();
+
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
@@ -38,11 +49,21 @@ exports.resizeUserPhoto = async (req, res, next) => {
 
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
-  await sharp(req.file.buffer)
+  const outputBuffer = await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`/img/users/${req.file.filename}`);
+    .toBuffer();
+
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: req.file.filename,
+    Body: outputBuffer,
+    ContentType: 'image/jpeg',
+  };
+
+  const uploadResult = await s3.upload(params).promise();
+  req.file.filename = uploadResult.Location;
 
   next();
 };
@@ -68,21 +89,27 @@ exports.updateMe = catchAsync(async (req, res, next) => {
       400,
     );
 
-  // 2) Update user document
-  const filteredBody = filterObj(req.body, 'name', 'email');
-  if (req.file) filteredBody.photo = req.file.filename;
+  setTimeout(async () => {
+    // 2) Update user document
+    const filteredBody = filterObj(req.body, 'name', 'email');
+    if (req.file) filteredBody.photo = req.file.filename;
 
-  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
-    new: true,
-    runValidators: true,
-  });
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      filteredBody,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      user: updatedUser,
-    },
-  });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: updatedUser,
+      },
+    });
+  }, 2000);
 });
 
 exports.deleteMe = catchAsync(async (req, res, next) => {

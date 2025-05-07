@@ -7,7 +7,7 @@ export function useLogin() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutate: login, isLoading } = useMutation({
+  const { mutate: login, isPending: isLoading } = useMutation({
     mutationFn: async ({ email, password }) => {
       const res = await fetch(`${API_URL}users/login`, {
         method: 'POST',

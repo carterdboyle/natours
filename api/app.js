@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
 
-const AppError = require('./utils/appError');
+// const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -20,7 +20,7 @@ const bookingController = require('./controllers/bookingController');
 
 const app = express();
 
-app.enable('trust proxy', 1);
+// app.enable('trust proxy', 1);
 
 console.log(process.env.NODE_ENV);
 
@@ -50,7 +50,12 @@ app.use(
       'frame-src': ['https://js.stripe.com'],
       'font-src': ["'self'", 'https://fonts.gstatic.com'],
       'worker-src': ["'self'", 'blob:'],
-      'img-src': ["'self'", 'data:', 'https://api.mapbox.com'],
+      'img-src': [
+        "'self'",
+        'data:',
+        'https://api.mapbox.com',
+        'https://natours-na.s3.us-east-2.amazonaws.com',
+      ],
       'connect-src': [
         "'self'",
         'https://api.mapbox.com',

@@ -24,7 +24,11 @@ export default function Header() {
             <NavLink className="nav__el" to="/me">
               <img
                 className="nav__user-img"
-                src={`/img/users/${user.photo}`}
+                src={
+                  user.photo.startsWith('http')
+                    ? `${user.photo}`
+                    : `/img/users/${user.photo}`
+                }
                 alt={`Photo of ${user.name}`}
               />
               <span>{user.name.split(' ').at(0)}</span>
