@@ -22,19 +22,12 @@ export default function Account() {
   const { isLoading: isLoadingUser, user } = useAuth();
   const { isLoading: isUpdatingUser, updateUser } = useUpdateUser();
 
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState(user?.name);
+  const [email, setEmail] = useState(user?.email);
 
   const [password, setPassword] = useState('');
   const [passwordCurrent, setPasswordCurrent] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-
-  console.log(isUpdatingUser);
-
-  useEffect(() => {
-    setUserName(user.name);
-    setEmail(user.email);
-  }, [user]);
 
   function handleUserUpdate(e, type) {
     e.preventDefault();

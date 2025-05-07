@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Node.js backend React front-end app",
   "scripts": {
-    "build-app": "npm --prefix api install && npm --prefix client install && npm --prefix client run build",
+    "build-app": "npm --prefix api install && npm --prefix client install",
     "start": "node api/server.js"
   },
   "author": "Carter Boyle",
