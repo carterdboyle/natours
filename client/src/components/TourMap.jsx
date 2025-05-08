@@ -33,7 +33,7 @@ export default function TourMap({ locations }) {
         offset: 30,
       })
         .setLngLat(loc.coordinates)
-        .setHTML(`<p>Dat ${loc.day}: ${loc.description}</p>`)
+        .setHTML(`<p>Day ${loc.day}: ${loc.description}</p>`)
         .addTo(mapRef.current);
 
       bounds.extend(loc.coordinates);

@@ -70,7 +70,7 @@ export default function Account() {
                 <NavItem link="#" text="Manage tours" icon="map" />
                 <NavItem link="#" text="Manage users" icon="users" />
                 <NavItem link="#" text="Manage reviews" icon="star" />
-                <NavItem link="#" text="Manage bookins" icon="briefcase" />
+                <NavItem link="#" text="Manage bookings" icon="briefcase" />
               </ul>
             </div>
           )}
