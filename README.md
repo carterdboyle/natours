@@ -161,4 +161,8 @@ such that the import of the password data doesn't cause a re-hashing with bcrypt
 - Back-end to create new tours and edit existing tours
 - Account page with a separate admin panel (non-functional - purely aesthetic)
   - Ability to update personal information and user avatar (using AWS S3 Buckets) ![image](https://github.com/user-attachments/assets/9e121bd1-8377-4d55-9c3c-872039e553c7)
+- Simulate a tour booking payment with Stripe.js ![image](https://github.com/user-attachments/assets/e466b070-b381-499b-a443-eb7df78c546b)
+- List of booked tours: ![image](https://github.com/user-attachments/assets/5841f2ba-1427-4c29-b253-c20c620110e8)
+
+ 
   
