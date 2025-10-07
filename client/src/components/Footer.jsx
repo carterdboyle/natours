@@ -21,10 +21,7 @@ export default function Footer() {
           <a href="#">Contact</a>
         </li>
       </ul>
-      <p className="footer__copyright">
-        &copy; by Jonas Schmedtmann. Feel free to use this project for your own
-        purposes, EXCEPT producing your own courses or tutorials.
-      </p>
+      <p className="footer__copyright">&copy; Natours Inc.</p>
     </div>
   );
 }
